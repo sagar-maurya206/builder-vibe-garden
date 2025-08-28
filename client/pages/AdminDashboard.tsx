@@ -182,8 +182,7 @@ export default function AdminDashboard() {
 
   const handleEdit = (id: string) => {
     console.log('Edit submission:', id);
-    // Navigate to edit page
-    alert(`Navigate to edit page for submission: ${id}`);
+    navigate(`/edit-submission/${id}`);
   };
 
   const handleExportExcel = () => {
