@@ -700,93 +700,10 @@ export default function SuperAdminDashboard() {
 
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Department Analytics</CardTitle>
-                  <CardDescription>
-                    Pending vs Approved submissions by department
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {metrics.departmentStats.map((dept) => (
-                      <div key={dept.department} className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium">{dept.department}</span>
-                          <span className="text-sm text-gray-500">Total: {dept.total}</span>
-                        </div>
-                        <div className="flex space-x-2">
-                          <div className="flex-1">
-                            <div className="flex justify-between text-xs mb-1">
-                              <span>Pending: {dept.pending}</span>
-                              <span>Approved: {dept.approved}</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-yellow-400 h-2 rounded-l-full" 
-                                style={{ width: `${dept.total > 0 ? (dept.pending / dept.total) * 100 : 0}%` }}
-                              ></div>
-                              <div 
-                                className="bg-green-500 h-2 rounded-r-full" 
-                                style={{ 
-                                  width: `${dept.total > 0 ? (dept.approved / dept.total) * 100 : 0}%`,
-                                  marginTop: '-8px',
-                                  marginLeft: `${dept.total > 0 ? (dept.pending / dept.total) * 100 : 0}%`
-                                }}
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          Financial Impact: ₹{(dept.financialImpact / 100000).toFixed(1)}L
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Approval Level Distribution</CardTitle>
-                  <CardDescription>
-                    Current pending submissions by approval hierarchy
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <div className="p-4 bg-green-50 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">{metrics.plantHeadApprovals}</div>
-                        <div className="text-sm text-green-700">Plant Head</div>
-                        <div className="text-xs text-green-600">≤₹1L</div>
-                      </div>
-                      <div className="p-4 bg-blue-50 rounded-lg">
-                        <div className="text-2xl font-bold text-blue-600">{metrics.operationsHeadApprovals}</div>
-                        <div className="text-sm text-blue-700">Operations</div>
-                        <div className="text-xs text-blue-600">₹1L-₹3L</div>
-                      </div>
-                      <div className="p-4 bg-purple-50 rounded-lg">
-                        <div className="text-2xl font-bold text-purple-600">{metrics.financeHeadApprovals}</div>
-                        <div className="text-sm text-purple-700">Finance</div>
-                        <div className="text-xs text-purple-600">₹3L-₹10L</div>
-                      </div>
-                    </div>
-
-                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-medium mb-2">Summary Statistics</h4>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>Total Submissions: <strong>{metrics.total}</strong></div>
-                        <div>Approval Rate: <strong>{metrics.total > 0 ? Math.round((metrics.approved / metrics.total) * 100) : 0}%</strong></div>
-                        <div>Pending: <strong>{metrics.pending}</strong></div>
-                        <div>Total Impact: <strong>₹{(metrics.totalFinancialImpact / 100000).toFixed(1)}L</strong></div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <AnalyticsCharts
+              submissions={mockAllSubmissions}
+              title="Global Analytics & Insights"
+            />
           </TabsContent>
 
           {/* Reports Tab */}
