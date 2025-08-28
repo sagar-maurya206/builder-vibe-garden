@@ -108,7 +108,7 @@ const translations = {
     'success.referenceId': 'आपका संदर्भ आईडी:',
     
     // Login
-    'login.admin.title': 'ए��मिन लॉगिन',
+    'login.admin.title': 'एडमिन लॉगिन',
     'login.superAdmin.title': 'सुपर एडमिन लॉगिन',
     'login.username': 'उपयोगकर्ता नाम',
     'login.username.placeholder': 'अपना उपयोगकर्ता नाम दर्ज करें',
@@ -136,7 +136,7 @@ const translations = {
   }
 };
 
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>('en');
 
   const t = (key: string): string => {
