@@ -429,26 +429,29 @@ export default function AdminDashboard() {
           </TabsContent>
 
           {/* Approved Tab */}
-          <TabsContent value="approved" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Approved Submissions</CardTitle>
-                <CardDescription>
+          <TabsContent value="approved" className="space-y-6 mt-6">
+            <Card className="professional-card">
+              <CardHeader className="border-b border-slate-100 pb-4">
+                <CardTitle className="text-xl text-slate-800">Approved Submissions</CardTitle>
+                <CardDescription className="text-slate-600">
                   View-only access to approved Kaizen submissions
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-gray-500">
-                  <Shield className="w-12 h-12 mx-auto mb-4 text-green-500" />
-                  <p>Approved submissions view - Read-only access</p>
-                  <p className="text-sm">This section shows approved Kaizen ideas for reference</p>
+              <CardContent className="pt-6">
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Shield className="w-10 h-10 text-emerald-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-800 mb-2">Approved Submissions</h3>
+                  <p className="text-slate-600 mb-1">View-only access to approved Kaizen ideas</p>
+                  <p className="text-sm text-slate-500">This section shows approved submissions for reference and learning</p>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-6">
+          <TabsContent value="analytics" className="space-y-6 mt-6">
             <AnalyticsCharts
               submissions={mockSubmissions.filter(s => s.department === adminDepartment)}
               title={`${adminDepartment} Department Analytics`}
@@ -456,24 +459,34 @@ export default function AdminDashboard() {
           </TabsContent>
 
           {/* Reports Tab */}
-          <TabsContent value="reports" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Department Reports</CardTitle>
-                <CardDescription>
+          <TabsContent value="reports" className="space-y-6 mt-6">
+            <Card className="professional-card">
+              <CardHeader className="border-b border-slate-100 pb-4">
+                <CardTitle className="text-xl text-slate-800">Department Reports</CardTitle>
+                <CardDescription className="text-slate-600">
                   Generate and export department-level reports
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-4">
-                    <h4 className="font-medium">Export Options</h4>
+                    <h4 className="font-semibold text-slate-700 flex items-center">
+                      <Download className="w-4 h-4 mr-2" />
+                      Export Options
+                    </h4>
                     <div className="space-y-3">
-                      <Button onClick={handleExportExcel} className="w-full justify-start">
+                      <Button
+                        onClick={handleExportExcel}
+                        className="w-full justify-start bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow-sm"
+                      >
                         <Download className="w-4 h-4 mr-2" />
                         Export to Excel
                       </Button>
-                      <Button onClick={handleExportPDF} variant="outline" className="w-full justify-start">
+                      <Button
+                        onClick={handleExportPDF}
+                        variant="outline"
+                        className="w-full justify-start border-slate-300 text-slate-700 hover:bg-slate-50 font-medium"
+                      >
                         <Download className="w-4 h-4 mr-2" />
                         Export to PDF
                       </Button>
@@ -481,13 +494,24 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="font-medium">Print Options</h4>
+                    <h4 className="font-semibold text-slate-700 flex items-center">
+                      <Printer className="w-4 h-4 mr-2" />
+                      Print Options
+                    </h4>
                     <div className="space-y-3">
-                      <Button onClick={() => handlePrintForm('selected')} variant="outline" className="w-full justify-start">
+                      <Button
+                        onClick={() => handlePrintForm('selected')}
+                        variant="outline"
+                        className="w-full justify-start border-slate-300 text-slate-700 hover:bg-slate-50 font-medium"
+                      >
                         <Printer className="w-4 h-4 mr-2" />
                         Print Selected Forms
                       </Button>
-                      <Button onClick={() => handlePrintForm('all')} variant="outline" className="w-full justify-start">
+                      <Button
+                        onClick={() => handlePrintForm('all')}
+                        variant="outline"
+                        className="w-full justify-start border-slate-300 text-slate-700 hover:bg-slate-50 font-medium"
+                      >
                         <Printer className="w-4 h-4 mr-2" />
                         Print All Department Forms
                       </Button>
@@ -495,14 +519,32 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-                  <h5 className="font-medium text-blue-900 mb-2">Report Features</h5>
-                  <ul className="text-sm text-blue-800 space-y-1">
-                    <li>• Department-specific submission summaries</li>
-                    <li>• Financial impact analysis</li>
-                    <li>• Status breakdown and trends</li>
-                    <li>• Operator performance metrics</li>
-                    <li>• Custom date range filtering</li>
+                <div className="mt-8 p-6 bg-blue-50 border border-blue-100 rounded-xl">
+                  <h5 className="font-semibold text-blue-900 mb-3 flex items-center">
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    Report Features
+                  </h5>
+                  <ul className="text-sm text-blue-800 space-y-2">
+                    <li className="flex items-start">
+                      <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Department-specific submission summaries
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Financial impact analysis
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Status breakdown and trends
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Operator performance metrics
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      Custom date range filtering
+                    </li>
                   </ul>
                 </div>
               </CardContent>
