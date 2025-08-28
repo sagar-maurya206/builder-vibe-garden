@@ -292,113 +292,119 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent className="pt-6">
                 {/* Filters */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8 p-6 bg-slate-50 rounded-xl border border-slate-200">
                   <div className="space-y-2">
-                    <Label htmlFor="search">Search</Label>
+                    <Label htmlFor="search" className="text-sm font-semibold text-slate-700">Search</Label>
                     <div className="relative">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Search className="absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
                       <Input
                         id="search"
                         placeholder="Search by name, title, or ID..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 professional-input"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status" className="text-sm font-semibold text-slate-700">Status</Label>
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-slate-300 hover:border-slate-400">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="All">All Statuses</SelectItem>
-                        <SelectItem value="Pending">Pending</SelectItem>
-                        <SelectItem value="Approved">Approved</SelectItem>
-                        <SelectItem value="Rejected">Rejected</SelectItem>
+                      <SelectContent className="border-slate-200">
+                        <SelectItem value="All" className="hover:bg-slate-50">All Statuses</SelectItem>
+                        <SelectItem value="Pending" className="hover:bg-slate-50">Pending</SelectItem>
+                        <SelectItem value="Approved" className="hover:bg-slate-50">Approved</SelectItem>
+                        <SelectItem value="Rejected" className="hover:bg-slate-50">Rejected</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="plant">Plant</Label>
+                    <Label htmlFor="plant" className="text-sm font-semibold text-slate-700">Plant</Label>
                     <Select value={plantFilter} onValueChange={setPlantFilter}>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-slate-300 hover:border-slate-400">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="All">All Plants</SelectItem>
-                        <SelectItem value="Pune">Pune</SelectItem>
-                        <SelectItem value="Aurangabad">Aurangabad</SelectItem>
-                        <SelectItem value="Nashik">Nashik</SelectItem>
-                        <SelectItem value="Chennai">Chennai</SelectItem>
+                      <SelectContent className="border-slate-200">
+                        <SelectItem value="All" className="hover:bg-slate-50">All Plants</SelectItem>
+                        <SelectItem value="Pune" className="hover:bg-slate-50">Pune</SelectItem>
+                        <SelectItem value="Aurangabad" className="hover:bg-slate-50">Aurangabad</SelectItem>
+                        <SelectItem value="Nashik" className="hover:bg-slate-50">Nashik</SelectItem>
+                        <SelectItem value="Chennai" className="hover:bg-slate-50">Chennai</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="date">Date Range</Label>
+                    <Label htmlFor="date" className="text-sm font-semibold text-slate-700">Date Range</Label>
                     <Select value={dateFilter} onValueChange={setDateFilter}>
-                      <SelectTrigger>
+                      <SelectTrigger className="border-slate-300 hover:border-slate-400">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="All">All Time</SelectItem>
-                        <SelectItem value="Last 7 days">Last 7 days</SelectItem>
-                        <SelectItem value="Last 30 days">Last 30 days</SelectItem>
-                        <SelectItem value="Last 90 days">Last 90 days</SelectItem>
+                      <SelectContent className="border-slate-200">
+                        <SelectItem value="All" className="hover:bg-slate-50">All Time</SelectItem>
+                        <SelectItem value="Last 7 days" className="hover:bg-slate-50">Last 7 days</SelectItem>
+                        <SelectItem value="Last 30 days" className="hover:bg-slate-50">Last 30 days</SelectItem>
+                        <SelectItem value="Last 90 days" className="hover:bg-slate-50">Last 90 days</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
                 {/* Submissions Table */}
-                <div className="border rounded-lg">
+                <div className="professional-table">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Unique ID</TableHead>
-                        <TableHead>Operator Name</TableHead>
-                        <TableHead>Title</TableHead>
-                        <TableHead>Plant</TableHead>
-                        <TableHead>Financial Impact</TableHead>
-                        <TableHead>Submission Date</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
+                      <TableRow className="bg-slate-50 border-b border-slate-200">
+                        <TableHead className="font-semibold text-slate-700 py-4">Unique ID</TableHead>
+                        <TableHead className="font-semibold text-slate-700 py-4">Operator Name</TableHead>
+                        <TableHead className="font-semibold text-slate-700 py-4">Title</TableHead>
+                        <TableHead className="font-semibold text-slate-700 py-4">Plant</TableHead>
+                        <TableHead className="font-semibold text-slate-700 py-4">Financial Impact</TableHead>
+                        <TableHead className="font-semibold text-slate-700 py-4">Submission Date</TableHead>
+                        <TableHead className="font-semibold text-slate-700 py-4">Status</TableHead>
+                        <TableHead className="font-semibold text-slate-700 py-4">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredSubmissions.map((submission) => (
-                        <TableRow key={submission.id}>
-                          <TableCell className="font-mono text-sm">{submission.id}</TableCell>
-                          <TableCell className="font-medium">{submission.operatorName}</TableCell>
-                          <TableCell className="max-w-xs truncate">{submission.title}</TableCell>
-                          <TableCell>{submission.plant}</TableCell>
-                          <TableCell>₹{submission.financialImpact.toLocaleString()}</TableCell>
-                          <TableCell>{submission.submissionDate.toLocaleDateString()}</TableCell>
-                          <TableCell>
-                            <Badge variant={
-                              submission.status === 'Approved' ? 'default' :
-                              submission.status === 'Pending' ? 'secondary' : 'destructive'
+                        <TableRow key={submission.id} className="hover:bg-slate-50/80 border-b border-slate-100">
+                          <TableCell className="font-mono text-sm text-slate-600 py-4">{submission.id}</TableCell>
+                          <TableCell className="font-semibold text-slate-800 py-4">{submission.operatorName}</TableCell>
+                          <TableCell className="max-w-xs truncate text-slate-700 py-4">{submission.title}</TableCell>
+                          <TableCell className="text-slate-600 py-4">{submission.plant}</TableCell>
+                          <TableCell className="font-semibold text-slate-800 py-4">₹{submission.financialImpact.toLocaleString()}</TableCell>
+                          <TableCell className="text-slate-600 py-4">{submission.submissionDate.toLocaleDateString()}</TableCell>
+                          <TableCell className="py-4">
+                            <Badge className={
+                              submission.status === 'Approved' ? 'status-approved' :
+                              submission.status === 'Pending' ? 'status-pending' : 'status-rejected'
                             }>
                               {submission.status}
                             </Badge>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="py-4">
                             <div className="flex space-x-2">
                               {canEditSubmission(submission.submissionDate) ? (
                                 <Button
                                   size="sm"
                                   variant="outline"
                                   onClick={() => handleEdit(submission.id)}
+                                  className="border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 font-medium"
                                 >
                                   <Edit3 className="w-4 h-4 mr-1" />
                                   Edit
                                 </Button>
                               ) : (
-                                <Button size="sm" variant="outline" disabled>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  disabled
+                                  className="opacity-50 cursor-not-allowed border-slate-200 text-slate-400"
+                                >
                                   <Edit3 className="w-4 h-4 mr-1" />
                                   Edit (30+ days)
                                 </Button>
@@ -412,8 +418,10 @@ export default function AdminDashboard() {
                 </div>
 
                 {filteredSubmissions.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    No submissions found matching your filters.
+                  <div className="text-center py-12 text-slate-500">
+                    <FileText className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+                    <p className="text-lg font-medium">No submissions found</p>
+                    <p className="text-sm">Try adjusting your filters to see more results.</p>
                   </div>
                 )}
               </CardContent>
