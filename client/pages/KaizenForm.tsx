@@ -204,6 +204,20 @@ export default function KaizenForm() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Error Display */}
+            {errors.length > 0 && (
+              <Alert className="mb-6 border-red-200 bg-red-50">
+                <AlertDescription className="text-red-700">
+                  <div className="font-medium mb-2">Please fix the following errors:</div>
+                  <ul className="list-disc list-inside space-y-1">
+                    {errors.map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                  </ul>
+                </AlertDescription>
+              </Alert>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
