@@ -202,83 +202,95 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-2">
-            <Shield className="w-8 h-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+        <div className="mb-10">
+          <div className="flex items-center space-x-4 mb-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-md">
+              <Shield className="w-7 h-7 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Admin Dashboard</h1>
+              <p className="text-slate-600 mt-1">Department: <span className="font-semibold text-slate-700">{adminDepartment}</span> • Kaizen submissions management</p>
+            </div>
           </div>
-          <p className="text-gray-600">Department: <strong>{adminDepartment}</strong> • Kaizen submissions management</p>
         </div>
 
         {/* Metrics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Submissions</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <Card className="professional-card border-l-4 border-l-blue-500">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-700">Total Submissions</CardTitle>
+              <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+                <FileText className="h-5 w-5 text-blue-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{metrics.total}</div>
-              <p className="text-xs text-muted-foreground">Department submissions</p>
+              <div className="text-3xl font-bold text-slate-800 mb-1">{metrics.total}</div>
+              <p className="text-sm text-slate-500 font-medium">Department submissions</p>
             </CardContent>
           </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Review</CardTitle>
-              <BarChart3 className="h-4 w-4 text-yellow-500" />
+
+          <Card className="professional-card border-l-4 border-l-amber-500">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-700">Pending Review</CardTitle>
+              <div className="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center">
+                <BarChart3 className="h-5 w-5 text-amber-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{metrics.pending}</div>
-              <p className="text-xs text-muted-foreground">Awaiting action</p>
+              <div className="text-3xl font-bold text-slate-800 mb-1">{metrics.pending}</div>
+              <p className="text-sm text-slate-500 font-medium">Awaiting action</p>
             </CardContent>
           </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Approved</CardTitle>
-              <Shield className="h-4 w-4 text-green-500" />
+
+          <Card className="professional-card border-l-4 border-l-emerald-500">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-700">Approved</CardTitle>
+              <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
+                <Shield className="h-5 w-5 text-emerald-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{metrics.approved}</div>
-              <p className="text-xs text-muted-foreground">{metrics.total > 0 ? Math.round((metrics.approved / metrics.total) * 100) : 0}% approval rate</p>
+              <div className="text-3xl font-bold text-slate-800 mb-1">{metrics.approved}</div>
+              <p className="text-sm text-slate-500 font-medium">{metrics.total > 0 ? Math.round((metrics.approved / metrics.total) * 100) : 0}% approval rate</p>
             </CardContent>
           </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Financial Impact</CardTitle>
-              <DollarSign className="h-4 w-4 text-purple-500" />
+
+          <Card className="professional-card border-l-4 border-l-violet-500">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-slate-700">Financial Impact</CardTitle>
+              <div className="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center">
+                <DollarSign className="h-5 w-5 text-violet-600" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">₹{(metrics.financialImpact / 100000).toFixed(1)}L</div>
-              <p className="text-xs text-muted-foreground">Total estimated savings</p>
+              <div className="text-3xl font-bold text-slate-800 mb-1">₹{(metrics.financialImpact / 100000).toFixed(1)}L</div>
+              <p className="text-sm text-slate-500 font-medium">Total estimated savings</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="submissions">Submissions</TabsTrigger>
-            <TabsTrigger value="approved">Approved</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 bg-slate-100 border border-slate-200 rounded-xl p-1">
+            <TabsTrigger value="submissions" className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium">Submissions</TabsTrigger>
+            <TabsTrigger value="approved" className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium">Approved</TabsTrigger>
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium">Analytics</TabsTrigger>
+            <TabsTrigger value="reports" className="data-[state=active]:bg-white data-[state=active]:shadow-sm font-medium">Reports</TabsTrigger>
           </TabsList>
 
           {/* Submissions Tab */}
-          <TabsContent value="submissions" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Department Submissions</CardTitle>
-                <CardDescription>
+          <TabsContent value="submissions" className="space-y-6 mt-6">
+            <Card className="professional-card">
+              <CardHeader className="border-b border-slate-100 pb-4">
+                <CardTitle className="text-xl text-slate-800">Department Submissions</CardTitle>
+                <CardDescription className="text-slate-600">
                   Manage and review Kaizen submissions from your department
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 {/* Filters */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div className="space-y-2">
