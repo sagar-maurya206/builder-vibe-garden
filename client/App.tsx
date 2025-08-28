@@ -13,6 +13,7 @@ import AdminLogin from "./pages/AdminLogin";
 import SuperAdminLogin from "./pages/SuperAdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import EditSubmission from "./pages/EditSubmission";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
