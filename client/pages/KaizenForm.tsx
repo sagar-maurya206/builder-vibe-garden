@@ -6,8 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Upload, CheckCircle, Factory } from 'lucide-react';
+import { Upload, CheckCircle, Factory, Image as ImageIcon, X } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  KaizenIdGenerator,
+  ImageCompressionService,
+  OrganizationService,
+  FormValidationService
+} from '../utils/services';
 
 interface FormData {
   operatorName: string;
