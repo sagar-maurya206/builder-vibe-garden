@@ -427,6 +427,14 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          {/* Analytics Tab */}
+          <TabsContent value="analytics" className="space-y-6">
+            <AnalyticsCharts
+              submissions={mockSubmissions.filter(s => s.department === adminDepartment)}
+              title={`${adminDepartment} Department Analytics`}
+            />
+          </TabsContent>
+
           {/* Reports Tab */}
           <TabsContent value="reports" className="space-y-6">
             <Card>
