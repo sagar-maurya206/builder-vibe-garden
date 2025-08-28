@@ -33,6 +33,7 @@ const App = () => (
               <Route path="/super-admin-login" element={<SuperAdminLogin />} />
               <Route path="/admin-dashboard" element={<AdminDashboard />} />
               <Route path="/AdminDashboard" element={<AdminDashboard />} />
+              <Route path="/edit-submission/:id" element={<EditSubmission />} />
               <Route path="/super-admin-dashboard" element={<SuperAdminDashboard />} />
               <Route path="/SuperAdminDashboard" element={<SuperAdminDashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
