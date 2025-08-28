@@ -48,27 +48,56 @@ export default function KaizenForm() {
   const departments = OrganizationService.getDepartments(language);
   const plants = OrganizationService.getPlants(language);
 
-  const generateUniqueId = () => {
-    const timestamp = Date.now().toString(36);
-    const random = Math.random().toString(36).substr(2, 5);
-    return `KZ-${timestamp}-${random}`.toUpperCase();
-  };
-
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear errors when user starts typing
+    if (errors.length > 0) {
+      setErrors([]);
+    }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // Check file size (3MB limit)
-      if (file.size > 3 * 1024 * 1024) {
-        alert('File size must be less than 3MB');
-        return;
-      }
-      setSelectedImage(file);
-      setFormData(prev => ({ ...prev, image: file }));
+    if (!file) return;
+
+    // Validate image
+    const validation = ImageCompressionService.validateImage(file);
+    if (!validation.valid) {
+      alert(validation.error);
+      return;
     }
+
+    setSelectedImage(file);
+    setIsCompressing(true);
+
+    try {
+      // Generate preview
+      const preview = ImageCompressionService.getImagePreview(file);
+      setImagePreview(preview);
+
+      // Compress image
+      const compressed = await ImageCompressionService.compressImage(file, 3, 0.8);
+      setCompressedImage(compressed);
+      setFormData(prev => ({ ...prev, image: compressed }));
+
+      console.log(`Original size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+      console.log(`Compressed size: ${(compressed.size / 1024 / 1024).toFixed(2)}MB`);
+    } catch (error) {
+      console.error('Image compression failed:', error);
+      alert('Failed to process image. Please try again.');
+    } finally {
+      setIsCompressing(false);
+    }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setCompressedImage(null);
+    if (imagePreview) {
+      ImageCompressionService.cleanupPreview(imagePreview);
+      setImagePreview(null);
+    }
+    setFormData(prev => ({ ...prev, image: undefined }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
