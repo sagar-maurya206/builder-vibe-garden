@@ -149,9 +149,10 @@ export default function KaizenForm() {
       expectedBenefits: '',
       financialImpact: '',
     });
-    setSelectedImage(null);
+    removeImage();
     setIsSubmitted(false);
     setSubmissionId('');
+    setErrors([]);
   };
 
   if (isSubmitted) {
