@@ -102,14 +102,38 @@ export default function KaizenForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    // Validate form
+    const validation = FormValidationService.validateKaizenForm({
+      ...formData,
+      financialImpact: Number(formData.financialImpact)
+    });
+
+    if (!validation.valid) {
+      setErrors(validation.errors);
+      return;
+    }
+
     // Generate unique ID
-    const uniqueId = generateUniqueId();
+    const uniqueId = KaizenIdGenerator.generateId();
     setSubmissionId(uniqueId);
-    
+
+    // Prepare submission data
+    const submissionData = {
+      id: uniqueId,
+      ...formData,
+      financialImpact: Number(formData.financialImpact),
+      submissionDate: new Date(),
+      image: compressedImage,
+      status: 'Pending',
+      approvalLevel: formData.financialImpact ?
+        ApprovalWorkflowService.getApprovalLevel(Number(formData.financialImpact)) :
+        'Plant Head'
+    };
+
     // Here you would typically send the data to your backend
-    console.log('Submitting Kaizen:', { ...formData, id: uniqueId });
-    
+    console.log('Submitting Kaizen:', submissionData);
+
     // Show success state
     setIsSubmitted(true);
   };
