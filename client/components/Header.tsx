@@ -1,8 +1,14 @@
-import { useLanguage, Language } from '../contexts/LanguageContext';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Factory, LogIn, Shield, Crown } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLanguage, Language } from "../contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Factory, LogIn, Shield, Crown } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
   const { language, setLanguage, t } = useLanguage();
@@ -12,10 +18,13 @@ export default function Header() {
     setLanguage(newLanguage);
   };
 
-  const isLoginPage = location.pathname.includes('login');
+  const isLoginPage = location.pathname.includes("login");
 
   return (
-    <header className="bg-white border-b border-slate-200 professional-card" style={{ borderRadius: 0, boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.08)' }}>
+    <header
+      className="bg-white border-b border-slate-200 professional-card"
+      style={{ borderRadius: 0, boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.08)" }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-18">
           {/* Logo and Title */}
@@ -25,9 +34,11 @@ export default function Header() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-800 tracking-tight">
-                {t('header.title')}
+                {t("header.title")}
               </h1>
-              <p className="text-sm text-slate-500 font-medium">Manufacturing Excellence</p>
+              <p className="text-sm text-slate-500 font-medium">
+                Manufacturing Excellence
+              </p>
             </div>
           </Link>
 
@@ -41,14 +52,14 @@ export default function Header() {
                   className="flex items-center space-x-2 px-3 py-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium"
                 >
                   <Shield className="w-4 h-4" />
-                  <span className="text-sm">{t('nav.adminLogin')}</span>
+                  <span className="text-sm">{t("nav.adminLogin")}</span>
                 </Link>
                 <Link
                   to="/super-admin-login"
                   className="flex items-center space-x-2 px-3 py-2 text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all duration-200 font-medium"
                 >
                   <Crown className="w-4 h-4" />
-                  <span className="text-sm">{t('nav.superAdminLogin')}</span>
+                  <span className="text-sm">{t("nav.superAdminLogin")}</span>
                 </Link>
               </nav>
             )}
@@ -56,7 +67,7 @@ export default function Header() {
             {/* Language Toggle */}
             <div className="flex items-center space-x-3">
               <span className="text-sm text-slate-600 hidden sm:inline font-medium">
-                {t('header.language')}:
+                {t("header.language")}:
               </span>
               <Select value={language} onValueChange={handleLanguageChange}>
                 <SelectTrigger className="w-28 border-slate-300 hover:border-slate-400 transition-colors">
@@ -82,19 +93,28 @@ export default function Header() {
             {/* Mobile Menu for Login Links */}
             {!isLoginPage && (
               <div className="md:hidden">
-                <Select value="" onValueChange={(value) => window.location.href = value}>
+                <Select
+                  value=""
+                  onValueChange={(value) => (window.location.href = value)}
+                >
                   <SelectTrigger className="w-36 border-slate-300">
                     <LogIn className="w-4 h-4 mr-2" />
                     <SelectValue placeholder="Login" />
                   </SelectTrigger>
                   <SelectContent className="border-slate-200">
-                    <SelectItem value="/admin-login" className="hover:bg-slate-50">
+                    <SelectItem
+                      value="/admin-login"
+                      className="hover:bg-slate-50"
+                    >
                       <div className="flex items-center space-x-2">
                         <Shield className="w-4 h-4" />
                         <span className="font-medium">Admin</span>
                       </div>
                     </SelectItem>
-                    <SelectItem value="/super-admin-login" className="hover:bg-slate-50">
+                    <SelectItem
+                      value="/super-admin-login"
+                      className="hover:bg-slate-50"
+                    >
                       <div className="flex items-center space-x-2">
                         <Crown className="w-4 h-4" />
                         <span className="font-medium">Super Admin</span>

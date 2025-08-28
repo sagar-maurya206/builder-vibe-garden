@@ -1,15 +1,21 @@
-import { useMemo } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  BarChart3, 
-  PieChart, 
-  TrendingUp, 
+import { useMemo } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  BarChart3,
+  PieChart,
+  TrendingUp,
   Calendar,
   Building,
   DollarSign,
-  Users
-} from 'lucide-react';
+  Users,
+} from "lucide-react";
 
 interface SubmissionData {
   id: string;
@@ -19,7 +25,7 @@ interface SubmissionData {
   title: string;
   financialImpact: number;
   submissionDate: Date;
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status: "Pending" | "Approved" | "Rejected";
 }
 
 interface AnalyticsChartsProps {
@@ -28,61 +34,108 @@ interface AnalyticsChartsProps {
   className?: string;
 }
 
-export default function AnalyticsCharts({ submissions, title = "Analytics Dashboard", className = "" }: AnalyticsChartsProps) {
+export default function AnalyticsCharts({
+  submissions,
+  title = "Analytics Dashboard",
+  className = "",
+}: AnalyticsChartsProps) {
   const analytics = useMemo(() => {
     // Department statistics
-    const departmentStats = ['Production', 'Quality', 'Maintenance', 'Engineering', 'HR', 'Finance'].map(dept => {
-      const deptSubmissions = submissions.filter(s => s.department === dept);
-      return {
-        department: dept,
-        total: deptSubmissions.length,
-        pending: deptSubmissions.filter(s => s.status === 'Pending').length,
-        approved: deptSubmissions.filter(s => s.status === 'Approved').length,
-        rejected: deptSubmissions.filter(s => s.status === 'Rejected').length,
-        financialImpact: deptSubmissions.reduce((sum, s) => sum + s.financialImpact, 0)
-      };
-    }).filter(d => d.total > 0);
+    const departmentStats = [
+      "Production",
+      "Quality",
+      "Maintenance",
+      "Engineering",
+      "HR",
+      "Finance",
+    ]
+      .map((dept) => {
+        const deptSubmissions = submissions.filter(
+          (s) => s.department === dept,
+        );
+        return {
+          department: dept,
+          total: deptSubmissions.length,
+          pending: deptSubmissions.filter((s) => s.status === "Pending").length,
+          approved: deptSubmissions.filter((s) => s.status === "Approved")
+            .length,
+          rejected: deptSubmissions.filter((s) => s.status === "Rejected")
+            .length,
+          financialImpact: deptSubmissions.reduce(
+            (sum, s) => sum + s.financialImpact,
+            0,
+          ),
+        };
+      })
+      .filter((d) => d.total > 0);
 
     // Plant statistics
-    const plantStats = ['Pune', 'Aurangabad', 'Nashik', 'Chennai'].map(plant => {
-      const plantSubmissions = submissions.filter(s => s.plant === plant);
-      return {
-        plant,
-        total: plantSubmissions.length,
-        pending: plantSubmissions.filter(s => s.status === 'Pending').length,
-        approved: plantSubmissions.filter(s => s.status === 'Approved').length,
-        rejected: plantSubmissions.filter(s => s.status === 'Rejected').length,
-        financialImpact: plantSubmissions.reduce((sum, s) => sum + s.financialImpact, 0)
-      };
-    }).filter(p => p.total > 0);
+    const plantStats = ["Pune", "Aurangabad", "Nashik", "Chennai"]
+      .map((plant) => {
+        const plantSubmissions = submissions.filter((s) => s.plant === plant);
+        return {
+          plant,
+          total: plantSubmissions.length,
+          pending: plantSubmissions.filter((s) => s.status === "Pending")
+            .length,
+          approved: plantSubmissions.filter((s) => s.status === "Approved")
+            .length,
+          rejected: plantSubmissions.filter((s) => s.status === "Rejected")
+            .length,
+          financialImpact: plantSubmissions.reduce(
+            (sum, s) => sum + s.financialImpact,
+            0,
+          ),
+        };
+      })
+      .filter((p) => p.total > 0);
 
     // Monthly trends (last 6 months)
     const monthlyTrends = [];
     for (let i = 5; i >= 0; i--) {
       const date = new Date();
       date.setMonth(date.getMonth() - i);
-      const monthSubmissions = submissions.filter(s => {
+      const monthSubmissions = submissions.filter((s) => {
         const submissionDate = new Date(s.submissionDate);
-        return submissionDate.getMonth() === date.getMonth() && 
-               submissionDate.getFullYear() === date.getFullYear();
+        return (
+          submissionDate.getMonth() === date.getMonth() &&
+          submissionDate.getFullYear() === date.getFullYear()
+        );
       });
-      
+
       monthlyTrends.push({
-        month: date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+        month: date.toLocaleDateString("en-US", {
+          month: "short",
+          year: "numeric",
+        }),
         total: monthSubmissions.length,
-        pending: monthSubmissions.filter(s => s.status === 'Pending').length,
-        approved: monthSubmissions.filter(s => s.status === 'Approved').length,
-        rejected: monthSubmissions.filter(s => s.status === 'Rejected').length,
-        financialImpact: monthSubmissions.reduce((sum, s) => sum + s.financialImpact, 0)
+        pending: monthSubmissions.filter((s) => s.status === "Pending").length,
+        approved: monthSubmissions.filter((s) => s.status === "Approved")
+          .length,
+        rejected: monthSubmissions.filter((s) => s.status === "Rejected")
+          .length,
+        financialImpact: monthSubmissions.reduce(
+          (sum, s) => sum + s.financialImpact,
+          0,
+        ),
       });
     }
 
     // Overall statistics
     const totalSubmissions = submissions.length;
-    const pendingSubmissions = submissions.filter(s => s.status === 'Pending').length;
-    const approvedSubmissions = submissions.filter(s => s.status === 'Approved').length;
-    const rejectedSubmissions = submissions.filter(s => s.status === 'Rejected').length;
-    const totalFinancialImpact = submissions.reduce((sum, s) => sum + s.financialImpact, 0);
+    const pendingSubmissions = submissions.filter(
+      (s) => s.status === "Pending",
+    ).length;
+    const approvedSubmissions = submissions.filter(
+      (s) => s.status === "Approved",
+    ).length;
+    const rejectedSubmissions = submissions.filter(
+      (s) => s.status === "Rejected",
+    ).length;
+    const totalFinancialImpact = submissions.reduce(
+      (sum, s) => sum + s.financialImpact,
+      0,
+    );
 
     return {
       departmentStats,
@@ -94,26 +147,37 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
         approved: approvedSubmissions,
         rejected: rejectedSubmissions,
         financialImpact: totalFinancialImpact,
-        approvalRate: totalSubmissions > 0 ? (approvedSubmissions / totalSubmissions * 100) : 0
-      }
+        approvalRate:
+          totalSubmissions > 0
+            ? (approvedSubmissions / totalSubmissions) * 100
+            : 0,
+      },
     };
   }, [submissions]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Approved':
-        return 'bg-green-500';
-      case 'Pending':
-        return 'bg-yellow-500';
-      case 'Rejected':
-        return 'bg-red-500';
+      case "Approved":
+        return "bg-green-500";
+      case "Pending":
+        return "bg-yellow-500";
+      case "Rejected":
+        return "bg-red-500";
       default:
-        return 'bg-gray-500';
+        return "bg-gray-500";
     }
   };
 
-  const BarChart = ({ data, title, dataKey }: { data: any[], title: string, dataKey: string }) => {
-    const maxValue = Math.max(...data.map(d => d[dataKey]));
+  const BarChart = ({
+    data,
+    title,
+    dataKey,
+  }: {
+    data: any[];
+    title: string;
+    dataKey: string;
+  }) => {
+    const maxValue = Math.max(...data.map((d) => d[dataKey]));
 
     return (
       <Card className="professional-card">
@@ -140,7 +204,9 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
                 <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
                   <div
                     className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${maxValue > 0 ? (item[dataKey] / maxValue) * 100 : 0}%` }}
+                    style={{
+                      width: `${maxValue > 0 ? (item[dataKey] / maxValue) * 100 : 0}%`,
+                    }}
                   ></div>
                 </div>
                 {item.financialImpact && (
@@ -157,7 +223,7 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
   };
 
   const StatusDistributionChart = ({ data }: { data: any[] }) => {
-    const maxTotal = Math.max(...data.map(d => d.total));
+    const maxTotal = Math.max(...data.map((d) => d.total));
 
     return (
       <Card className="professional-card">
@@ -174,18 +240,24 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
             {data.map((dept, index) => (
               <div key={index} className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-semibold text-slate-700">{dept.department}</span>
-                  <span className="text-sm font-medium text-slate-600">Total: {dept.total}</span>
+                  <span className="text-sm font-semibold text-slate-700">
+                    {dept.department}
+                  </span>
+                  <span className="text-sm font-medium text-slate-600">
+                    Total: {dept.total}
+                  </span>
                 </div>
 
                 <div className="w-full bg-slate-200 rounded-full h-4 flex overflow-hidden shadow-inner">
                   {dept.approved > 0 && (
                     <div
                       className="bg-emerald-500 h-4 flex items-center justify-center text-xs text-white font-semibold"
-                      style={{ width: `${(dept.approved / dept.total) * 100}%` }}
+                      style={{
+                        width: `${(dept.approved / dept.total) * 100}%`,
+                      }}
                       title={`Approved: ${dept.approved}`}
                     >
-                      {dept.approved > 0 && dept.total > 5 ? dept.approved : ''}
+                      {dept.approved > 0 && dept.total > 5 ? dept.approved : ""}
                     </div>
                   )}
                   {dept.pending > 0 && (
@@ -194,16 +266,18 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
                       style={{ width: `${(dept.pending / dept.total) * 100}%` }}
                       title={`Pending: ${dept.pending}`}
                     >
-                      {dept.pending > 0 && dept.total > 5 ? dept.pending : ''}
+                      {dept.pending > 0 && dept.total > 5 ? dept.pending : ""}
                     </div>
                   )}
                   {dept.rejected > 0 && (
                     <div
                       className="bg-red-500 h-4 flex items-center justify-center text-xs text-white font-semibold"
-                      style={{ width: `${(dept.rejected / dept.total) * 100}%` }}
+                      style={{
+                        width: `${(dept.rejected / dept.total) * 100}%`,
+                      }}
                       title={`Rejected: ${dept.rejected}`}
                     >
-                      {dept.rejected > 0 && dept.total > 5 ? dept.rejected : ''}
+                      {dept.rejected > 0 && dept.total > 5 ? dept.rejected : ""}
                     </div>
                   )}
                 </div>
@@ -234,26 +308,36 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <Card className="professional-card border-l-4 border-l-blue-500">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-semibold text-slate-700">Total Submissions</CardTitle>
+          <CardTitle className="text-sm font-semibold text-slate-700">
+            Total Submissions
+          </CardTitle>
           <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
             <FileText className="h-5 w-5 text-blue-600" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold text-slate-800 mb-1">{analytics.overall.total}</div>
-          <p className="text-sm text-slate-500 font-medium">All time submissions</p>
+          <div className="text-3xl font-bold text-slate-800 mb-1">
+            {analytics.overall.total}
+          </div>
+          <p className="text-sm text-slate-500 font-medium">
+            All time submissions
+          </p>
         </CardContent>
       </Card>
 
       <Card className="professional-card border-l-4 border-l-emerald-500">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-semibold text-slate-700">Approval Rate</CardTitle>
+          <CardTitle className="text-sm font-semibold text-slate-700">
+            Approval Rate
+          </CardTitle>
           <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
             <TrendingUp className="h-5 w-5 text-emerald-600" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold text-slate-800 mb-1">{analytics.overall.approvalRate.toFixed(1)}%</div>
+          <div className="text-3xl font-bold text-slate-800 mb-1">
+            {analytics.overall.approvalRate.toFixed(1)}%
+          </div>
           <p className="text-sm text-slate-500 font-medium">
             {analytics.overall.approved} approved of {analytics.overall.total}
           </p>
@@ -262,27 +346,39 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
 
       <Card className="professional-card border-l-4 border-l-amber-500">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-semibold text-slate-700">Pending Review</CardTitle>
+          <CardTitle className="text-sm font-semibold text-slate-700">
+            Pending Review
+          </CardTitle>
           <div className="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center">
             <Clock className="h-5 w-5 text-amber-600" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold text-slate-800 mb-1">{analytics.overall.pending}</div>
-          <p className="text-sm text-slate-500 font-medium">Awaiting approval</p>
+          <div className="text-3xl font-bold text-slate-800 mb-1">
+            {analytics.overall.pending}
+          </div>
+          <p className="text-sm text-slate-500 font-medium">
+            Awaiting approval
+          </p>
         </CardContent>
       </Card>
 
       <Card className="professional-card border-l-4 border-l-violet-500">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-          <CardTitle className="text-sm font-semibold text-slate-700">Financial Impact</CardTitle>
+          <CardTitle className="text-sm font-semibold text-slate-700">
+            Financial Impact
+          </CardTitle>
           <div className="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center">
             <DollarSign className="h-5 w-5 text-violet-600" />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold text-slate-800 mb-1">₹{(analytics.overall.financialImpact / 100000).toFixed(1)}L</div>
-          <p className="text-sm text-slate-500 font-medium">Total estimated savings</p>
+          <div className="text-3xl font-bold text-slate-800 mb-1">
+            ₹{(analytics.overall.financialImpact / 100000).toFixed(1)}L
+          </div>
+          <p className="text-sm text-slate-500 font-medium">
+            Total estimated savings
+          </p>
         </CardContent>
       </Card>
     </div>
@@ -296,8 +392,12 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
             <BarChart3 className="w-7 h-7 text-white" />
           </div>
           <div>
-            <h2 className="text-3xl font-bold text-slate-800 tracking-tight">{title}</h2>
-            <p className="text-slate-600 font-medium">Comprehensive analytics and insights</p>
+            <h2 className="text-3xl font-bold text-slate-800 tracking-tight">
+              {title}
+            </h2>
+            <p className="text-slate-600 font-medium">
+              Comprehensive analytics and insights
+            </p>
           </div>
         </div>
       </div>
@@ -305,26 +405,26 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
       <OverviewCards />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <BarChart 
-          data={analytics.departmentStats} 
-          title="Submissions by Department" 
-          dataKey="total" 
+        <BarChart
+          data={analytics.departmentStats}
+          title="Submissions by Department"
+          dataKey="total"
         />
-        
-        <BarChart 
-          data={analytics.plantStats} 
-          title="Submissions by Plant" 
-          dataKey="total" 
+
+        <BarChart
+          data={analytics.plantStats}
+          title="Submissions by Plant"
+          dataKey="total"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <StatusDistributionChart data={analytics.departmentStats} />
-        
-        <BarChart 
-          data={analytics.monthlyTrends} 
-          title="Monthly Trends" 
-          dataKey="total" 
+
+        <BarChart
+          data={analytics.monthlyTrends}
+          title="Monthly Trends"
+          dataKey="total"
         />
       </div>
 
@@ -352,9 +452,16 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
                   .sort((a, b) => b.financialImpact - a.financialImpact)
                   .slice(0, 5)
                   .map((dept, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
-                      <span className="text-sm font-semibold text-slate-700">{dept.department}</span>
-                      <span className="text-sm font-bold text-slate-800">₹{(dept.financialImpact / 100000).toFixed(1)}L</span>
+                    <div
+                      key={index}
+                      className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-700">
+                        {dept.department}
+                      </span>
+                      <span className="text-sm font-bold text-slate-800">
+                        ₹{(dept.financialImpact / 100000).toFixed(1)}L
+                      </span>
                     </div>
                   ))}
               </div>
@@ -370,9 +477,16 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
                   .sort((a, b) => b.financialImpact - a.financialImpact)
                   .slice(0, 4)
                   .map((plant, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
-                      <span className="text-sm font-semibold text-slate-700">{plant.plant}</span>
-                      <span className="text-sm font-bold text-slate-800">₹{(plant.financialImpact / 100000).toFixed(1)}L</span>
+                    <div
+                      key={index}
+                      className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors"
+                    >
+                      <span className="text-sm font-semibold text-slate-700">
+                        {plant.plant}
+                      </span>
+                      <span className="text-sm font-bold text-slate-800">
+                        ₹{(plant.financialImpact / 100000).toFixed(1)}L
+                      </span>
                     </div>
                   ))}
               </div>
@@ -386,13 +500,33 @@ export default function AnalyticsCharts({ submissions, title = "Analytics Dashbo
 
 // Helper components
 const FileText = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+    />
   </svg>
 );
 
 const Clock = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
   </svg>
 );

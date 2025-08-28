@@ -1,20 +1,38 @@
-import { useState } from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Upload, CheckCircle, Factory, Image as ImageIcon, X } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useState } from "react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Upload,
+  CheckCircle,
+  Factory,
+  Image as ImageIcon,
+  X,
+} from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   KaizenIdGenerator,
   ImageCompressionService,
   OrganizationService,
   FormValidationService,
-  ApprovalWorkflowService
-} from '../utils/services';
+  ApprovalWorkflowService,
+} from "../utils/services";
 
 interface FormData {
   operatorName: string;
@@ -30,16 +48,16 @@ interface FormData {
 export default function KaizenForm() {
   const { t, language } = useLanguage();
   const [formData, setFormData] = useState<FormData>({
-    operatorName: '',
-    department: '',
-    plant: '',
-    kaizenTitle: '',
-    description: '',
-    expectedBenefits: '',
-    financialImpact: '',
+    operatorName: "",
+    department: "",
+    plant: "",
+    kaizenTitle: "",
+    description: "",
+    expectedBenefits: "",
+    financialImpact: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submissionId, setSubmissionId] = useState('');
+  const [submissionId, setSubmissionId] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [compressedImage, setCompressedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -50,7 +68,7 @@ export default function KaizenForm() {
   const plants = OrganizationService.getPlants(language);
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear errors when user starts typing
     if (errors.length > 0) {
       setErrors([]);
@@ -77,15 +95,21 @@ export default function KaizenForm() {
       setImagePreview(preview);
 
       // Compress image
-      const compressed = await ImageCompressionService.compressImage(file, 3, 0.8);
+      const compressed = await ImageCompressionService.compressImage(
+        file,
+        3,
+        0.8,
+      );
       setCompressedImage(compressed);
-      setFormData(prev => ({ ...prev, image: compressed }));
+      setFormData((prev) => ({ ...prev, image: compressed }));
 
       console.log(`Original size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
-      console.log(`Compressed size: ${(compressed.size / 1024 / 1024).toFixed(2)}MB`);
+      console.log(
+        `Compressed size: ${(compressed.size / 1024 / 1024).toFixed(2)}MB`,
+      );
     } catch (error) {
-      console.error('Image compression failed:', error);
-      alert('Failed to process image. Please try again.');
+      console.error("Image compression failed:", error);
+      alert("Failed to process image. Please try again.");
     } finally {
       setIsCompressing(false);
     }
@@ -98,7 +122,7 @@ export default function KaizenForm() {
       ImageCompressionService.cleanupPreview(imagePreview);
       setImagePreview(null);
     }
-    setFormData(prev => ({ ...prev, image: undefined }));
+    setFormData((prev) => ({ ...prev, image: undefined }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -107,7 +131,7 @@ export default function KaizenForm() {
     // Validate form
     const validation = FormValidationService.validateKaizenForm({
       ...formData,
-      financialImpact: Number(formData.financialImpact)
+      financialImpact: Number(formData.financialImpact),
     });
 
     if (!validation.valid) {
@@ -126,14 +150,16 @@ export default function KaizenForm() {
       financialImpact: Number(formData.financialImpact),
       submissionDate: new Date(),
       image: compressedImage,
-      status: 'Pending',
-      approvalLevel: formData.financialImpact ?
-        ApprovalWorkflowService.getApprovalLevel(Number(formData.financialImpact)) :
-        'Plant Head'
+      status: "Pending",
+      approvalLevel: formData.financialImpact
+        ? ApprovalWorkflowService.getApprovalLevel(
+            Number(formData.financialImpact),
+          )
+        : "Plant Head",
     };
 
     // Here you would typically send the data to your backend
-    console.log('Submitting Kaizen:', submissionData);
+    console.log("Submitting Kaizen:", submissionData);
 
     // Show success state
     setIsSubmitted(true);
@@ -141,17 +167,17 @@ export default function KaizenForm() {
 
   const handleClear = () => {
     setFormData({
-      operatorName: '',
-      department: '',
-      plant: '',
-      kaizenTitle: '',
-      description: '',
-      expectedBenefits: '',
-      financialImpact: '',
+      operatorName: "",
+      department: "",
+      plant: "",
+      kaizenTitle: "",
+      description: "",
+      expectedBenefits: "",
+      financialImpact: "",
     });
     removeImage();
     setIsSubmitted(false);
-    setSubmissionId('');
+    setSubmissionId("");
     setErrors([]);
   };
 
@@ -164,16 +190,18 @@ export default function KaizenForm() {
               <CheckCircle className="w-10 h-10 text-emerald-600" />
             </div>
             <CardTitle className="text-2xl font-bold text-emerald-700 mb-2">
-              {t('success.title')}
+              {t("success.title")}
             </CardTitle>
             <CardDescription className="text-slate-600 font-medium">
-              {t('success.message')}
+              {t("success.message")}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center space-y-6 pt-6">
             <Alert className="border-emerald-200 bg-emerald-50">
               <AlertDescription className="text-emerald-800">
-                <div className="font-semibold mb-2">{t('success.referenceId')}</div>
+                <div className="font-semibold mb-2">
+                  {t("success.referenceId")}
+                </div>
                 <code className="bg-white px-3 py-2 rounded-lg text-lg font-mono shadow-sm border border-emerald-200 text-emerald-800">
                   {submissionId}
                 </code>
@@ -200,7 +228,7 @@ export default function KaizenForm() {
               <Factory className="w-10 h-10 text-white" />
             </div>
             <CardTitle className="text-3xl font-bold text-slate-800 tracking-tight mb-2">
-              {t('form.title')}
+              {t("form.title")}
             </CardTitle>
             <CardDescription className="text-slate-600 font-medium text-lg">
               Share your improvement ideas to make our workplace better
@@ -211,10 +239,14 @@ export default function KaizenForm() {
             {errors.length > 0 && (
               <Alert className="mb-8 border-red-200 bg-red-50">
                 <AlertDescription className="text-red-700">
-                  <div className="font-semibold mb-3 text-red-800">Please fix the following errors:</div>
+                  <div className="font-semibold mb-3 text-red-800">
+                    Please fix the following errors:
+                  </div>
                   <ul className="list-disc list-inside space-y-2">
                     {errors.map((error, index) => (
-                      <li key={index} className="font-medium">{error}</li>
+                      <li key={index} className="font-medium">
+                        {error}
+                      </li>
                     ))}
                   </ul>
                 </AlertDescription>
@@ -224,29 +256,55 @@ export default function KaizenForm() {
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Personal Information */}
               <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">Personal Information</h3>
+                <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                  Personal Information
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="operatorName" className="text-sm font-semibold text-slate-700">{t('form.operatorName')} *</Label>
+                    <Label
+                      htmlFor="operatorName"
+                      className="text-sm font-semibold text-slate-700"
+                    >
+                      {t("form.operatorName")} *
+                    </Label>
                     <Input
                       id="operatorName"
                       type="text"
-                      placeholder={t('form.operatorName.placeholder')}
+                      placeholder={t("form.operatorName.placeholder")}
                       value={formData.operatorName}
-                      onChange={(e) => handleInputChange('operatorName', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("operatorName", e.target.value)
+                      }
                       className="border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 professional-input"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="department" className="text-sm font-semibold text-slate-700">{t('form.department')} *</Label>
-                    <Select value={formData.department} onValueChange={(value) => handleInputChange('department', value)} required>
+                    <Label
+                      htmlFor="department"
+                      className="text-sm font-semibold text-slate-700"
+                    >
+                      {t("form.department")} *
+                    </Label>
+                    <Select
+                      value={formData.department}
+                      onValueChange={(value) =>
+                        handleInputChange("department", value)
+                      }
+                      required
+                    >
                       <SelectTrigger className="border-slate-300 hover:border-slate-400">
-                        <SelectValue placeholder={t('form.department.placeholder')} />
+                        <SelectValue
+                          placeholder={t("form.department.placeholder")}
+                        />
                       </SelectTrigger>
                       <SelectContent className="border-slate-200">
                         {departments.map((dept) => (
-                          <SelectItem key={dept.value} value={dept.value} className="hover:bg-slate-50">
+                          <SelectItem
+                            key={dept.value}
+                            value={dept.value}
+                            className="hover:bg-slate-50"
+                          >
                             {dept.label}
                           </SelectItem>
                         ))}
@@ -257,14 +315,27 @@ export default function KaizenForm() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="plant" className="text-sm font-semibold text-slate-700">{t('form.plant')} *</Label>
-                <Select value={formData.plant} onValueChange={(value) => handleInputChange('plant', value)} required>
+                <Label
+                  htmlFor="plant"
+                  className="text-sm font-semibold text-slate-700"
+                >
+                  {t("form.plant")} *
+                </Label>
+                <Select
+                  value={formData.plant}
+                  onValueChange={(value) => handleInputChange("plant", value)}
+                  required
+                >
                   <SelectTrigger className="border-slate-300 hover:border-slate-400">
-                    <SelectValue placeholder={t('form.plant.placeholder')} />
+                    <SelectValue placeholder={t("form.plant.placeholder")} />
                   </SelectTrigger>
                   <SelectContent className="border-slate-200">
                     {plants.map((plant) => (
-                      <SelectItem key={plant.value} value={plant.value} className="hover:bg-slate-50">
+                      <SelectItem
+                        key={plant.value}
+                        value={plant.value}
+                        className="hover:bg-slate-50"
+                      >
                         {plant.label}
                       </SelectItem>
                     ))}
@@ -274,28 +345,44 @@ export default function KaizenForm() {
 
               {/* Kaizen Details */}
               <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">Kaizen Details</h3>
+                <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                  Kaizen Details
+                </h3>
                 <div className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="kaizenTitle" className="text-sm font-semibold text-slate-700">{t('form.kaizenTitle')} *</Label>
+                    <Label
+                      htmlFor="kaizenTitle"
+                      className="text-sm font-semibold text-slate-700"
+                    >
+                      {t("form.kaizenTitle")} *
+                    </Label>
                     <Input
                       id="kaizenTitle"
                       type="text"
-                      placeholder={t('form.kaizenTitle.placeholder')}
+                      placeholder={t("form.kaizenTitle.placeholder")}
                       value={formData.kaizenTitle}
-                      onChange={(e) => handleInputChange('kaizenTitle', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("kaizenTitle", e.target.value)
+                      }
                       className="border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 professional-input"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="description" className="text-sm font-semibold text-slate-700">{t('form.description')} *</Label>
+                    <Label
+                      htmlFor="description"
+                      className="text-sm font-semibold text-slate-700"
+                    >
+                      {t("form.description")} *
+                    </Label>
                     <Textarea
                       id="description"
-                      placeholder={t('form.description.placeholder')}
+                      placeholder={t("form.description.placeholder")}
                       value={formData.description}
-                      onChange={(e) => handleInputChange('description', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("description", e.target.value)
+                      }
                       rows={4}
                       className="border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 professional-input"
                       required
@@ -303,12 +390,19 @@ export default function KaizenForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="expectedBenefits" className="text-sm font-semibold text-slate-700">{t('form.expectedBenefits')} *</Label>
+                    <Label
+                      htmlFor="expectedBenefits"
+                      className="text-sm font-semibold text-slate-700"
+                    >
+                      {t("form.expectedBenefits")} *
+                    </Label>
                     <Textarea
                       id="expectedBenefits"
-                      placeholder={t('form.expectedBenefits.placeholder')}
+                      placeholder={t("form.expectedBenefits.placeholder")}
                       value={formData.expectedBenefits}
-                      onChange={(e) => handleInputChange('expectedBenefits', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("expectedBenefits", e.target.value)
+                      }
                       rows={3}
                       className="border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 professional-input"
                       required
@@ -316,13 +410,20 @@ export default function KaizenForm() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="financialImpact" className="text-sm font-semibold text-slate-700">{t('form.financialImpact')} *</Label>
+                    <Label
+                      htmlFor="financialImpact"
+                      className="text-sm font-semibold text-slate-700"
+                    >
+                      {t("form.financialImpact")} *
+                    </Label>
                     <Input
                       id="financialImpact"
                       type="number"
-                      placeholder={t('form.financialImpact.placeholder')}
+                      placeholder={t("form.financialImpact.placeholder")}
                       value={formData.financialImpact}
-                      onChange={(e) => handleInputChange('financialImpact', e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("financialImpact", e.target.value)
+                      }
                       className="border-slate-300 focus:border-blue-500 focus:ring-blue-500/20 professional-input"
                       required
                     />
@@ -332,7 +433,12 @@ export default function KaizenForm() {
 
               {/* Image Upload */}
               <div className="space-y-3">
-                <Label htmlFor="image" className="text-sm font-semibold text-slate-700">{t('form.uploadImage')}</Label>
+                <Label
+                  htmlFor="image"
+                  className="text-sm font-semibold text-slate-700"
+                >
+                  {t("form.uploadImage")}
+                </Label>
 
                 {!selectedImage ? (
                   <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-200">
@@ -351,7 +457,7 @@ export default function KaizenForm() {
                         Click to upload an image
                       </p>
                       <p className="text-xs text-slate-500">
-                        {t('form.uploadImage.hint')}
+                        {t("form.uploadImage.hint")}
                       </p>
                     </label>
                   </div>
@@ -385,19 +491,24 @@ export default function KaizenForm() {
 
                         <div className="space-y-2">
                           <p className="text-xs text-slate-600 font-medium">
-                            Original: {(selectedImage.size / 1024 / 1024).toFixed(2)} MB
+                            Original:{" "}
+                            {(selectedImage.size / 1024 / 1024).toFixed(2)} MB
                           </p>
 
                           {isCompressing && (
                             <p className="text-xs text-blue-600 font-medium">
-                              <span className="inline-block animate-spin mr-2">⟳</span>
+                              <span className="inline-block animate-spin mr-2">
+                                ⟳
+                              </span>
                               Compressing image...
                             </p>
                           )}
 
                           {compressedImage && !isCompressing && (
                             <p className="text-xs text-emerald-600 font-medium">
-                              ✓ Compressed: {(compressedImage.size / 1024 / 1024).toFixed(2)} MB
+                              ✓ Compressed:{" "}
+                              {(compressedImage.size / 1024 / 1024).toFixed(2)}{" "}
+                              MB
                             </p>
                           )}
                         </div>
@@ -420,7 +531,7 @@ export default function KaizenForm() {
                       Processing Image...
                     </>
                   ) : (
-                    t('button.submit')
+                    t("button.submit")
                   )}
                 </Button>
                 <Button
@@ -430,7 +541,7 @@ export default function KaizenForm() {
                   className="flex-1 border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold py-3 px-6 rounded-lg"
                   disabled={isCompressing}
                 >
-                  {t('button.clear')}
+                  {t("button.clear")}
                 </Button>
               </div>
             </form>

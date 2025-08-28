@@ -1,14 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useLanguage } from '../contexts/LanguageContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Save, AlertTriangle, Calendar } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ArrowLeft, Save, AlertTriangle, Calendar } from "lucide-react";
 
 // This would typically come from API/context
 interface Submission {
@@ -29,7 +41,7 @@ export default function EditSubmission() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
-  
+
   const [formData, setFormData] = useState<Submission | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -40,15 +52,17 @@ export default function EditSubmission() {
     // Simulate API call
     setTimeout(() => {
       const mockSubmission: Submission = {
-        id: id || 'KZ-LMN123-ABC45',
-        operatorName: 'Rajesh Kumar',
-        department: 'Production',
-        plant: 'Pune',
-        kaizenTitle: 'Reduce waste in assembly line',
-        description: 'Implement lean manufacturing principles to reduce material waste by 15%',
-        expectedBenefits: 'Cost savings, environmental impact reduction, improved efficiency',
+        id: id || "KZ-LMN123-ABC45",
+        operatorName: "Rajesh Kumar",
+        department: "Production",
+        plant: "Pune",
+        kaizenTitle: "Reduce waste in assembly line",
+        description:
+          "Implement lean manufacturing principles to reduce material waste by 15%",
+        expectedBenefits:
+          "Cost savings, environmental impact reduction, improved efficiency",
         financialImpact: 75000,
-        submissionDate: new Date('2024-01-15'),
+        submissionDate: new Date("2024-01-15"),
       };
       setFormData(mockSubmission);
       setIsLoading(false);
@@ -56,67 +70,78 @@ export default function EditSubmission() {
   }, [id]);
 
   const departments = [
-    { value: 'production', label: t('dept.production') },
-    { value: 'quality', label: t('dept.quality') },
-    { value: 'maintenance', label: t('dept.maintenance') },
-    { value: 'engineering', label: t('dept.engineering') },
-    { value: 'hr', label: t('dept.hr') },
-    { value: 'finance', label: t('dept.finance') },
+    { value: "production", label: t("dept.production") },
+    { value: "quality", label: t("dept.quality") },
+    { value: "maintenance", label: t("dept.maintenance") },
+    { value: "engineering", label: t("dept.engineering") },
+    { value: "hr", label: t("dept.hr") },
+    { value: "finance", label: t("dept.finance") },
   ];
 
   const plants = [
-    { value: 'pune', label: t('plant.pune') },
-    { value: 'aurangabad', label: t('plant.aurangabad') },
-    { value: 'nashik', label: t('plant.nashik') },
-    { value: 'chennai', label: t('plant.chennai') },
+    { value: "pune", label: t("plant.pune") },
+    { value: "aurangabad", label: t("plant.aurangabad") },
+    { value: "nashik", label: t("plant.nashik") },
+    { value: "chennai", label: t("plant.chennai") },
   ];
 
-  const handleInputChange = (field: keyof Submission, value: string | number) => {
+  const handleInputChange = (
+    field: keyof Submission,
+    value: string | number,
+  ) => {
     if (!formData) return;
-    
-    setFormData(prev => ({ ...prev!, [field]: value }));
+
+    setFormData((prev) => ({ ...prev!, [field]: value }));
     setHasChanges(true);
   };
 
   const handleSave = async () => {
     if (!formData) return;
-    
+
     setIsSaving(true);
-    
+
     // Simulate save API call
     setTimeout(() => {
-      console.log('Saving submission:', formData);
+      console.log("Saving submission:", formData);
       setHasChanges(false);
       setIsSaving(false);
-      
+
       // Update edit history
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev!,
         lastEditDate: new Date(),
-        editedBy: 'Admin User'
+        editedBy: "Admin User",
       }));
-      
-      alert('Submission updated successfully!');
-      navigate('/admin-dashboard');
+
+      alert("Submission updated successfully!");
+      navigate("/admin-dashboard");
     }, 1500);
   };
 
   const handleCancel = () => {
     if (hasChanges) {
-      if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
-        navigate('/admin-dashboard');
+      if (
+        confirm("You have unsaved changes. Are you sure you want to leave?")
+      ) {
+        navigate("/admin-dashboard");
       }
     } else {
-      navigate('/admin-dashboard');
+      navigate("/admin-dashboard");
     }
   };
 
   const canEdit = (submissionDate: Date) => {
-    const daysSinceSubmission = (Date.now() - submissionDate.getTime()) / (1000 * 60 * 60 * 24);
+    const daysSinceSubmission =
+      (Date.now() - submissionDate.getTime()) / (1000 * 60 * 60 * 24);
     return daysSinceSubmission <= 30;
   };
 
-  const daysSinceSubmission = formData ? Math.floor((Date.now() - formData.submissionDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+  const daysSinceSubmission = formData
+    ? Math.floor(
+        (Date.now() - formData.submissionDate.getTime()) /
+          (1000 * 60 * 60 * 24),
+      )
+    : 0;
 
   if (isLoading) {
     return (
@@ -137,8 +162,10 @@ export default function EditSubmission() {
             <CardTitle className="text-red-600">Submission Not Found</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600 mb-4">The requested submission could not be found.</p>
-            <Button onClick={() => navigate('/admin-dashboard')}>
+            <p className="text-gray-600 mb-4">
+              The requested submission could not be found.
+            </p>
+            <Button onClick={() => navigate("/admin-dashboard")}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Return to Dashboard
             </Button>
@@ -157,15 +184,21 @@ export default function EditSubmission() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Button>
-          
+
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Edit Submission</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Edit Submission
+              </h1>
               <p className="text-gray-600">ID: {formData.id}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Submitted: {formData.submissionDate.toLocaleDateString()}</p>
-              <p className="text-sm text-gray-500">{daysSinceSubmission} days ago</p>
+              <p className="text-sm text-gray-500">
+                Submitted: {formData.submissionDate.toLocaleDateString()}
+              </p>
+              <p className="text-sm text-gray-500">
+                {daysSinceSubmission} days ago
+              </p>
             </div>
           </div>
         </div>
@@ -175,7 +208,8 @@ export default function EditSubmission() {
           <Alert className="mb-6 border-red-200 bg-red-50">
             <AlertTriangle className="h-4 w-4 text-red-600" />
             <AlertDescription className="text-red-700">
-              This submission is older than 30 days and cannot be edited. Edit period has expired.
+              This submission is older than 30 days and cannot be edited. Edit
+              period has expired.
             </AlertDescription>
           </Alert>
         )}
@@ -185,7 +219,8 @@ export default function EditSubmission() {
           <Alert className="mb-6 border-blue-200 bg-blue-50">
             <Calendar className="h-4 w-4 text-blue-600" />
             <AlertDescription className="text-blue-700">
-              Last edited by {formData.editedBy} on {formData.lastEditDate.toLocaleDateString()}
+              Last edited by {formData.editedBy} on{" "}
+              {formData.lastEditDate.toLocaleDateString()}
             </AlertDescription>
           </Alert>
         )}
@@ -195,7 +230,8 @@ export default function EditSubmission() {
           <CardHeader>
             <CardTitle>Submission Details</CardTitle>
             <CardDescription>
-              Edit the submission details. Changes will be logged for audit purposes.
+              Edit the submission details. Changes will be logged for audit
+              purposes.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -207,15 +243,23 @@ export default function EditSubmission() {
                   id="operatorName"
                   type="text"
                   value={formData.operatorName}
-                  onChange={(e) => handleInputChange('operatorName', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("operatorName", e.target.value)
+                  }
                   disabled={!canEdit(formData.submissionDate)}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="department">Department *</Label>
-                <Select 
-                  value={formData.department.toLowerCase()} 
-                  onValueChange={(value) => handleInputChange('department', departments.find(d => d.value === value)?.label || value)}
+                <Select
+                  value={formData.department.toLowerCase()}
+                  onValueChange={(value) =>
+                    handleInputChange(
+                      "department",
+                      departments.find((d) => d.value === value)?.label ||
+                        value,
+                    )
+                  }
                   disabled={!canEdit(formData.submissionDate)}
                 >
                   <SelectTrigger>
@@ -234,9 +278,14 @@ export default function EditSubmission() {
 
             <div className="space-y-2">
               <Label htmlFor="plant">Plant *</Label>
-              <Select 
-                value={formData.plant.toLowerCase()} 
-                onValueChange={(value) => handleInputChange('plant', plants.find(p => p.value === value)?.label || value)}
+              <Select
+                value={formData.plant.toLowerCase()}
+                onValueChange={(value) =>
+                  handleInputChange(
+                    "plant",
+                    plants.find((p) => p.value === value)?.label || value,
+                  )
+                }
                 disabled={!canEdit(formData.submissionDate)}
               >
                 <SelectTrigger>
@@ -259,7 +308,9 @@ export default function EditSubmission() {
                 id="kaizenTitle"
                 type="text"
                 value={formData.kaizenTitle}
-                onChange={(e) => handleInputChange('kaizenTitle', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("kaizenTitle", e.target.value)
+                }
                 disabled={!canEdit(formData.submissionDate)}
               />
             </div>
@@ -269,7 +320,9 @@ export default function EditSubmission() {
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
                 rows={4}
                 disabled={!canEdit(formData.submissionDate)}
               />
@@ -280,19 +333,25 @@ export default function EditSubmission() {
               <Textarea
                 id="expectedBenefits"
                 value={formData.expectedBenefits}
-                onChange={(e) => handleInputChange('expectedBenefits', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("expectedBenefits", e.target.value)
+                }
                 rows={3}
                 disabled={!canEdit(formData.submissionDate)}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="financialImpact">Estimated Financial Impact (₹) *</Label>
+              <Label htmlFor="financialImpact">
+                Estimated Financial Impact (₹) *
+              </Label>
               <Input
                 id="financialImpact"
                 type="number"
                 value={formData.financialImpact}
-                onChange={(e) => handleInputChange('financialImpact', Number(e.target.value))}
+                onChange={(e) =>
+                  handleInputChange("financialImpact", Number(e.target.value))
+                }
                 disabled={!canEdit(formData.submissionDate)}
               />
             </div>
@@ -300,8 +359,8 @@ export default function EditSubmission() {
             {/* Form Actions */}
             {canEdit(formData.submissionDate) && (
               <div className="flex gap-4 pt-4">
-                <Button 
-                  onClick={handleSave} 
+                <Button
+                  onClick={handleSave}
                   disabled={!hasChanges || isSaving}
                   className="min-w-32"
                 >
