@@ -105,6 +105,7 @@ const mockSubmissions: Submission[] = [
 
 export default function AdminDashboard() {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('submissions');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -469,7 +470,7 @@ export default function AdminDashboard() {
                   <h5 className="font-medium text-blue-900 mb-2">Report Features</h5>
                   <ul className="text-sm text-blue-800 space-y-1">
                     <li>• Department-specific submission summaries</li>
-                    <li>�� Financial impact analysis</li>
+                    <li>• Financial impact analysis</li>
                     <li>• Status breakdown and trends</li>
                     <li>• Operator performance metrics</li>
                     <li>• Custom date range filtering</li>
