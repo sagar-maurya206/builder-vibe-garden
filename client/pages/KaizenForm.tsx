@@ -317,24 +317,76 @@ export default function KaizenForm() {
               {/* Image Upload */}
               <div className="space-y-2">
                 <Label htmlFor="image">{t('form.uploadImage')}</Label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                  <label htmlFor="image" className="cursor-pointer">
-                    <Upload className="mx-auto w-8 h-8 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600">
-                      {selectedImage ? selectedImage.name : 'Click to upload an image'}
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      {t('form.uploadImage.hint')}
-                    </p>
-                  </label>
-                </div>
+
+                {!selectedImage ? (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+                    <input
+                      id="image"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <label htmlFor="image" className="cursor-pointer">
+                      <Upload className="mx-auto w-8 h-8 text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-600">
+                        Click to upload an image
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {t('form.uploadImage.hint')}
+                      </p>
+                    </label>
+                  </div>
+                ) : (
+                  <div className="border rounded-lg p-4 bg-gray-50">
+                    <div className="flex items-start space-x-4">
+                      {imagePreview && (
+                        <div className="flex-shrink-0">
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-20 h-20 object-cover rounded-lg"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-medium text-gray-900 truncate">
+                            {selectedImage.name}
+                          </p>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={removeImage}
+                            className="text-red-600 hover:text-red-800"
+                          >
+                            <X className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                        <div className="mt-1 space-y-1">
+                          <p className="text-xs text-gray-500">
+                            Original: {(selectedImage.size / 1024 / 1024).toFixed(2)} MB
+                          </p>
+
+                          {isCompressing && (
+                            <p className="text-xs text-blue-600">
+                              <span className="inline-block animate-spin mr-1">⟳</span>
+                              Compressing image...
+                            </p>
+                          )}
+
+                          {compressedImage && !isCompressing && (
+                            <p className="text-xs text-green-600">
+                              ✓ Compressed: {(compressedImage.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Form Actions */}
