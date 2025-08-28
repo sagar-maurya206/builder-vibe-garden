@@ -391,10 +391,27 @@ export default function KaizenForm() {
 
               {/* Form Actions */}
               <div className="flex gap-4 pt-4">
-                <Button type="submit" className="flex-1">
-                  {t('button.submit')}
+                <Button
+                  type="submit"
+                  className="flex-1"
+                  disabled={isCompressing}
+                >
+                  {isCompressing ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Processing Image...
+                    </>
+                  ) : (
+                    t('button.submit')
+                  )}
                 </Button>
-                <Button type="button" variant="outline" onClick={handleClear} className="flex-1">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleClear}
+                  className="flex-1"
+                  disabled={isCompressing}
+                >
                   {t('button.clear')}
                 </Button>
               </div>
