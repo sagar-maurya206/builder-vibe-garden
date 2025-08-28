@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 export type Language = 'en' | 'hi';
 
@@ -108,7 +108,7 @@ const translations = {
     'success.referenceId': 'आपका संदर्भ आईडी:',
     
     // Login
-    'login.admin.title': 'एडमिन लॉगिन',
+    'login.admin.title': 'ए��मिन लॉगिन',
     'login.superAdmin.title': 'सुपर एडमिन लॉगिन',
     'login.username': 'उपयोगकर्ता नाम',
     'login.username.placeholder': 'अपना उपयोगकर्ता नाम दर्ज करें',
