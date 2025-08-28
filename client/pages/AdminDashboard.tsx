@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -468,7 +469,7 @@ export default function AdminDashboard() {
                   <h5 className="font-medium text-blue-900 mb-2">Report Features</h5>
                   <ul className="text-sm text-blue-800 space-y-1">
                     <li>• Department-specific submission summaries</li>
-                    <li>• Financial impact analysis</li>
+                    <li>�� Financial impact analysis</li>
                     <li>• Status breakdown and trends</li>
                     <li>• Operator performance metrics</li>
                     <li>• Custom date range filtering</li>
