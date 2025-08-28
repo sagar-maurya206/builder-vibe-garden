@@ -27,7 +27,7 @@ interface FormData {
 }
 
 export default function KaizenForm() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState<FormData>({
     operatorName: '',
     department: '',
@@ -40,22 +40,13 @@ export default function KaizenForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionId, setSubmissionId] = useState('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [compressedImage, setCompressedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isCompressing, setIsCompressing] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
-  const departments = [
-    { value: 'production', label: t('dept.production') },
-    { value: 'quality', label: t('dept.quality') },
-    { value: 'maintenance', label: t('dept.maintenance') },
-    { value: 'engineering', label: t('dept.engineering') },
-    { value: 'hr', label: t('dept.hr') },
-    { value: 'finance', label: t('dept.finance') },
-  ];
-
-  const plants = [
-    { value: 'pune', label: t('plant.pune') },
-    { value: 'aurangabad', label: t('plant.aurangabad') },
-    { value: 'nashik', label: t('plant.nashik') },
-    { value: 'chennai', label: t('plant.chennai') },
-  ];
+  const departments = OrganizationService.getDepartments(language);
+  const plants = OrganizationService.getPlants(language);
 
   const generateUniqueId = () => {
     const timestamp = Date.now().toString(36);
